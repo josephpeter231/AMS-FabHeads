@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .btn-primary, .btn-danger {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row mb-4">
+            <!-- Welcome Text - Left-aligned -->
+            <div class="col-6 text-left">
+                <h1>Welcome, {{ request.user.username }}</h1>
+            </div>
+            
+            <!-- Buttons - Right-aligned -->
+            <div class="col-6 text-right ">
+                <a href="{% url 'logout' %}" class="btn btn-danger mb-2">Logout</a>
+                <a href="{% url 'leave_request' %}" class="btn btn-primary ">Request Leave</a>
+                
+            </div>
+        </div>
+        <!-- Attendance Records -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Attendance Records</h2>
+            </div>
+            <div class="card-body">
+                {% if attendance_records %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Entry Time</th>
+                                    <th scope="col">Exit Time</th>
+                                    <th scope="col">Hours Worked</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in attendance_records %}
+                                    <tr>
+                                        <td>{{ record.entry_time.date }}</td>
+                                        <td>{{ record.entry_time.time }}</td>
+                                        <td>{{ record.exit_time.time }}</td>
+                                        <td>{{ record.hours_worked }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No attendance records available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Leave Requests -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Leave Requests</h2>
+            </div>
+            <div class="card-body">
+                {% if leave_requests %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Reason</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for leave_request in leave_requests %}
+                                    <tr>
+                                        <td>{{ leave_request.date }}</td>
+                                        <td>{{ leave_request.reason }}</td>
+                                        <td>
+                                            {% if leave_request.approved %}
+                                                <span class="badge badge-success">Approved</span>
+                                            {% else %}
+                                                <span class="badge badge-warning">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No leave requests available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

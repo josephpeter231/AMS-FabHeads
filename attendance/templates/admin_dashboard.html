@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .btn-primary, .btn-danger {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-4">Admin Dashboard</h1>
+            <p class="lead">Manage users and their attendance from here.</p>
+        </div>
+
+        <!-- Manage Users Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Manage Users</h3>
+            </div>
+            <div class="card-body">
+                {% if users %}
+                    <ul class="list-group">
+                        {% for user in users %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ user.username }}</span>
+                                <a href="{% url 'mark_attendance' user.id %}" class="btn btn-info btn-sm">Mark Attendance</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No users available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Logout Section -->
+        <div class="text-center mt-4">
+            <a href="{% url 'logout' %}" class="btn btn-danger btn-lg">Logout</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
